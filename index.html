@@ -495,6 +495,12 @@
             background: #164e35;
             transform: translateY(-2px);
         }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Sprawi, że obrazek ładnie wypełni całe 250px wysokości bez zniekształceń */
+        }
     </style>
 </head>
 <body>
@@ -544,7 +550,7 @@
             { id: 3, name: 'London', price: 99.99, image: '' },
             { id: 4, name: 'Newcastle', price: 79.99, image: '' },
             { id: 5, name: 'Edinburgh', price: 79.99, image: '' },
-            { id: 6, name: 'Barcelona', price: 94.99, image: '' },
+            { id: 6, name: 'Barcelona', price: 94.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_1xudlq1xudlq1xud.png' },
             { id: 7, name: 'Madrid', price: 94.99, image: '' },
             { id: 8, name: 'Alicante', price: 89.99, image: '' },
             { id: 9, name: 'Sevilla', price: 84.99, image: '' },
@@ -599,7 +605,9 @@
                 const selectedSize = selectedSizes[sizeKey] || sizes[0];
 
                 productCard.innerHTML = `
-                    <div class="product-image">${product.emoji}</div>
+                    <div class="product-image">
+                        ${product.image ? `<img src="${product.image}" alt="${product.name}" crossorigin="anonymous">` : '<div style="color: #cbd5e1; font-size: 2em;">📷 Brak obrazu</div>'}
+                    </div>
                     <div class="product-info">
                         <div class="product-name">${product.name}</div>
                         <div class="product-price">${product.price.toFixed(2)} zł</div>
