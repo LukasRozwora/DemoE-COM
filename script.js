@@ -454,17 +454,20 @@ document.addEventListener('keydown', event => {
 initProducts();
 syncProductWithUrl();
 
+
 // Proaktywne zaproszenie do rozmowy
 let proactiveClickCount = 0;
 let proactiveMessageVisible = false;
+let proactiveMessageDisabled = false;
 
 function showProactiveChatMessage() {
     if (proactiveMessageVisible) return;
-
-    proactiveMessageVisible = true;
+    if (proactiveMessageDisabled) return;
 
     const existingMessage = document.getElementById('proactiveChatMessage');
     if (existingMessage) return;
+
+    proactiveMessageVisible = true;
 
     const message = document.createElement('div');
     message.id = 'proactiveChatMessage';
@@ -481,11 +484,11 @@ function showProactiveChatMessage() {
 
     closeButton.addEventListener('click', function (event) {
         event.stopPropagation();
-        hideProactiveChatMessage();
+        hideProactiveChatMessage(true);
     });
 }
 
-function hideProactiveChatMessage() {
+function hideProactiveChatMessage(disableForSession = false) {
     const message = document.getElementById('proactiveChatMessage');
 
     if (message) {
@@ -493,6 +496,51 @@ function hideProactiveChatMessage() {
     }
 
     proactiveMessageVisible = false;
+
+    if (disableForSession) {
+        proactiveMessageDisabled = true;
+    }
+}
+
+function isChatWidgetClick(event) {
+    const path = event.composedPath ? event.composedPath() : [];
+
+    const clickedWidgetElement = path.some(element => {
+        if (!element || !element.tagName) return false;
+
+        const tagName = element.tagName.toLowerCase();
+        const id = element.id ? element.id.toLowerCase() : '';
+        const className = element.className ? String(element.className).toLowerCase() : '';
+        const title = element.title ? element.title.toLowerCase() : '';
+
+        return (
+            tagName === 'elevenlabs-convai' ||
+            tagName === 'iframe' && (
+                title.includes('chat') ||
+                title.includes('messaging') ||
+                title.includes('zendesk')
+            ) ||
+            id.includes('zendesk') ||
+            id.includes('webwidget') ||
+            className.includes('zendesk') ||
+            className.includes('webwidget')
+        );
+    });
+
+    if (clickedWidgetElement) return true;
+
+    // Awaryjnie: jeśli kliknięcie jest w prawym dolnym obszarze ekranu,
+    // gdzie znajduje się ikona/widget chatu, traktujemy to jako kliknięcie w chat.
+    const clickX = event.clientX;
+    const clickY = event.clientY;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    const clickedBottomRightChatArea =
+        clickX > windowWidth - 140 &&
+        clickY > windowHeight - 140;
+
+    return clickedBottomRightChatArea;
 }
 
 // Pokaż po 10 sekundach
@@ -500,20 +548,52 @@ setTimeout(function () {
     showProactiveChatMessage();
 }, 10000);
 
-// Pokaż po 3 kliknięciach w stronę
-document.addEventListener('click', function (event) {
-    const clickedChatWidget = event.target.closest('elevenlabs-convai');
-
-    if (clickedChatWidget) {
-        hideProactiveChatMessage();
+// Pokaż po 3 kliknięciach, ale schowaj po kliknięciu widgetu chatu
+document.addEventListener('pointerdown', function (event) {
+    if (isChatWidgetClick(event)) {
+        hideProactiveChatMessage(true);
         return;
     }
+
+    const clickedProactiveMessage = event.target.closest('#proactiveChatMessage');
+
+    if (clickedProactiveMessage) return;
 
     proactiveClickCount += 1;
 
     if (proactiveClickCount >= 3) {
         showProactiveChatMessage();
     }
+}, true);
+
+// Dodatkowe zabezpieczenie:
+// jeśli po kliknięciu widget chatu otworzy okno i zmieni rozmiar/strukturę DOM,
+// dymka zostanie schowana.
+const chatWidgetObserver = new MutationObserver(function () {
+    const possibleChatElements = document.querySelectorAll(
+        'elevenlabs-convai, iframe, [id*="zendesk"], [class*="zendesk"], [id*="webWidget"], [class*="webWidget"]'
+    );
+
+    possibleChatElements.forEach(element => {
+        const rect = element.getBoundingClientRect();
+
+        const looksLikeOpenChatWindow =
+            rect.width > 250 &&
+            rect.height > 250 &&
+            rect.right > window.innerWidth - 80 &&
+            rect.bottom > window.innerHeight - 80;
+
+        if (looksLikeOpenChatWindow) {
+            hideProactiveChatMessage(true);
+        }
+    });
 });
+
+chatWidgetObserver.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true
+});
+
 
 
