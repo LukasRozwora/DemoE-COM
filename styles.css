@@ -847,7 +847,7 @@ header p {
   }
 }
 
-body.chat-active .proactive-chat-message {
+.chat-active #zendesk-prompts {
   display: none !important;
 }
 
