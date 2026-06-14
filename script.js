@@ -453,3 +453,70 @@ document.addEventListener('keydown', event => {
 // Initialize on load
 initProducts();
 syncProductWithUrl();
+
+// Proaktywne zaproszenie do rozmowy przy ikonie chatu
+let userInteractionCount = 0;
+let proactiveMessageShown = false;
+
+function createProactiveChatMessage() {
+    const message = document.createElement('div');
+    message.id = 'proactiveChatMessage';
+    message.className = 'proactive-chat-message';
+    message.innerHTML = `
+        <button type="button" class="proactive-chat-close" aria-label="Zamknij wiadomość">&times;</button>
+        <div class="proactive-chat-text">
+            Cześć, w razie potrzeby chętnie doradzę 🙂
+        </div>
+    `;
+
+    document.body.appendChild(message);
+
+    const closeButton = message.querySelector('.proactive-chat-close');
+
+    closeButton.addEventListener('click', () => {
+        message.remove();
+        sessionStorage.setItem('proactiveChatClosed', 'true');
+    });
+
+    message.addEventListener('click', event => {
+        if (!event.target.classList.contains('proactive-chat-close')) {
+            // Dymka znika po kliknięciu. Widget chatu klient może otworzyć ręcznie.
+            message.remove();
+            sessionStorage.setItem('proactiveChatClosed', 'true');
+        }
+    });
+}
+
+function showProactiveChatMessage() {
+    if (proactiveMessageShown) return;
+    if (sessionStorage.getItem('proactiveChatClosed') === 'true') return;
+
+    proactiveMessageShown = true;
+    createProactiveChatMessage();
+}
+
+// Warunek 1: pokaż po 10 sekundach od wejścia na stronę
+setTimeout(() => {
+    showProactiveChatMessage();
+}, 10000);
+
+// Warunek 2: pokaż po 3 kliknięciach użytkownika
+document.addEventListener('click', event => {
+    const ignoredElements = [
+        '#proactiveChatMessage',
+        'elevenlabs-convai'
+    ];
+
+    const shouldIgnore = ignoredElements.some(selector => event.target.closest(selector));
+
+    if (shouldIgnore) return;
+
+    userInteractionCount += 1;
+
+    if (userInteractionCount >= 3) {
+        showProactiveChatMessage();
+    }
+});
+
+
+
