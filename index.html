@@ -4,532 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>European cities T-shirts shop</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f6f5; /* Nowoczesne, lekko sportowe, jasne tło */
-            min-height: 100vh;
-            padding: 20px;
-            color: #1e293b;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #0f3424 0%, #1a5c3f 100%); /* Piłkarska, głęboka zieleń premium */
-            color: #ffffff;
-            padding: 40px 20px;
-            text-align: center;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 25px rgba(15, 52, 36, 0.15);
-        }
-
-        header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: none; /* Rezygnacja ze staromodnego cienia na rzecz płaskiego designu */
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-
-        header p {
-            font-size: 1.1em;
-            color: #a7f3d0; /* Delikatny miętowy akcent dla tekstu pomocniczego */
-            opacity: 0.9;
-        }
-
-        /* Cart Button */
-        .cart-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #10b981; /* Nowoczesny, konwertujący kolor miętowo-zielony */
-            color: #ffffff;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .cart-button:hover {
-            background: #059669; /* Ciemniejszy odcień w tej samej tonacji przy hover */
-            transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(16, 185, 129, 0.45);
-        }
-
-        .cart-counter {
-            background: #0f3424; /* Kontrastowy, głęboki kolor dla licznika */
-            color: #ffffff;
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        /* Shop Container */
-        .shop-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: none;
-        }
-
-        .shop-container.active {
-            display: block;
-        }
-
-        /* Products Grid */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        @media (max-width: 1200px) {
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Product Card */
-        .product-card {
-            background: #ffffff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(15, 52, 36, 0.04);
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(15, 52, 36, 0.1);
-            border-color: #cbd5e1;
-        }
-
-        .product-image {
-            width: 100%;
-            height: 250px;
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); /* Neutralne, czyste tło pod eksponowany produkt */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3em;
-            color: white;
-        }
-
-        .product-info {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-name {
-            font-size: 1.2em;
-            font-weight: 700;
-            color: #0f3424; /* Główny kolor marki dla nazwy produktu */
-            margin-bottom: 8px;
-        }
-
-        .product-price {
-            font-size: 1.4em;
-            color: #10b981; /* Kolor akcentowy dla ceny - przyciąga wzrok */
-            font-weight: 800;
-            margin-bottom: 15px;
-        }
-
-        .size-selector {
-            margin-bottom: 15px;
-        }
-
-        .size-selector label {
-            display: block;
-            font-size: 0.9em;
-            color: #64748b;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .size-options {
-            display: flex;
-            gap: 8px;
-        }
-
-        .size-option {
-            flex: 1;
-            padding: 8px;
-            border: 2px solid #cbd5e1;
-            background: #ffffff;
-            color: #0f3424;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            text-align: center;
-        }
-
-        .size-option:hover {
-            border-color: #164e35;
-            background: #f0fdf4;
-        }
-
-        .size-option.selected {
-            background: #0f3424; /* Spójny, głęboki kolor dla zaznaczonego rozmiaru */
-            color: #ffffff;
-            border-color: #0f3424;
-        }
-
-        .add-to-cart-btn {
-            background: linear-gradient(135deg, #0f3424 0%, #164e35 100%); /* Elegancki, jednolity ton przycisku */
-            color: #ffffff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-size: 1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .add-to-cart-btn:hover {
-            background: linear-gradient(135deg, #164e35 0%, #1f704c 100%);
-            transform: scale(1.02);
-        }
-
-        .add-to-cart-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Cart Modal */
-        .cart-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 52, 36, 0.4); /* Przyciemnienie w tonacji butelkowej zieleni z przezroczystością */
-            backdrop-filter: blur(4px); /* Nowoczesny efekt rozmycia tła */
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .cart-modal.active {
-            display: flex;
-        }
-
-        .cart-content {
-            background: #ffffff;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .cart-header {
-            background: #0f3424; /* Spójny z resztą strony nagłówek koszyka */
-            color: #ffffff;
-            padding: 20px;
-            border-radius: 16px 16px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-header h2 {
-            font-size: 1.6em;
-            font-weight: 700;
-        }
-
-        .close-button {
-            background: none;
-            border: none;
-            color: #a7f3d0;
-            font-size: 1.5em;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .close-button:hover {
-            transform: rotate(90deg);
-            color: #ffffff;
-        }
-
-        .cart-items {
-            padding: 20px;
-        }
-
-        .empty-cart {
-            text-align: center;
-            padding: 40px 20px;
-            color: #64748b;
-            font-size: 1.1em;
-        }
-
-        .cart-item {
-            background: #f8fafc;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #10b981; /* Miętowy akcent identyfikujący produkt */
-        }
-
-        .cart-item-name {
-            font-weight: 700;
-            color: #0f3424;
-            font-size: 1.1em;
-            margin-bottom: 8px;
-        }
-
-        .cart-item-details {
-            font-size: 0.9em;
-            color: #64748b;
-            margin-bottom: 10px;
-        }
-
-        .cart-item-details span {
-            display: block;
-            margin-bottom: 3px;
-        }
-
-        .cart-item-price {
-            color: #10b981;
-            font-weight: 700;
-            font-size: 1.2em;
-        }
-
-        .remove-btn {
-            background: #f1f5f9; /* Neutralny przycisk usuwania zamiast krzykliwej czerwieni */
-            color: #64748b;
-            border: 1px solid #cbd5e1;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.85em;
-            margin-top: 10px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .remove-btn:hover {
-            background: #fee2e2; /* Delikatny czerwony akcent dopiero po najechaniu */
-            color: #ef4444;
-            border-color: #fca5a5;
-        }
-
-        .cart-summary {
-            padding: 0 20px;
-            border-top: 2px solid #e2e8f0;
-            margin-top: 20px;
-        }
-
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            font-size: 1.3em;
-            font-weight: 800;
-            color: #0f3424;
-        }
-
-        .cart-actions {
-            display: flex;
-            gap: 10px;
-            padding: 20px;
-            border-top: 2px solid #e2e8f0;
-        }
-
-        .action-btn {
-            flex: 1;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        /* Usunięte kolory zielony/czerwony na rzecz spójnej, monochromatycznej hierarchii przycisków */
-        .btn-buy {
-            background: #10b981; /* Główny przycisk akcji (Kup) - najbardziej widoczny */
-            color: #ffffff;
-        }
-
-        .btn-buy:hover {
-            background: #059669;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-        }
-
-        .btn-continue {
-            background: #0f3424; /* Przycisk drugorzędny - ciemny motyw marki */
-            color: #ffffff;
-        }
-
-        .btn-continue:hover {
-            background: #164e35;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(15, 52, 36, 0.2);
-        }
-
-        .btn-abandon {
-            background: #f1f5f9; /* Przycisk destrukcyjny / trzeciorzędny - neutralny, aby nie odciągać uwagi od zakupu */
-            color: #64748b;
-            border: 1px solid #cbd5e1;
-        }
-
-        .btn-abandon:hover {
-            background: #e2e8f0;
-            color: #0f3424;
-            transform: translateY(-2px);
-        }
-
-        /* Message Modal */
-        .message-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 52, 36, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 300;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .message-modal.active {
-            display: flex;
-        }
-
-        .message-box {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 40px;
-            text-align: center;
-            max-width: 400px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-            animation: slideIn 0.3s ease;
-        }
-
-        /* Zmiana jaskrawych obramowań komunikatów na dopasowaną zieleń */
-        .message-box.success {
-            border-top: 5px solid #10b981;
-        }
-
-        .message-box.abandoned {
-            border-top: 5px solid #64748b;
-        }
-
-        .message-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-
-        .message-text {
-            font-size: 1.2em;
-            color: #0f3424;
-            font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-
-        .message-ok-btn {
-            background: #0f3424;
-            color: #ffffff;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 6px;
-            font-size: 1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .message-ok-btn:hover {
-            background: #164e35;
-            transform: translateY(-2px);
-        }
-
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Sprawi, że obrazek ładnie wypełni całe 250px wysokości bez zniekształceń */
-        }
-    </style>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <header>
         <h1>European cities T-shirts shop</h1>
-        <p>Your journey in the perfect t-shirt</p>
+        <p>Your journey with the perfect t-shirt</p>
     </header>
 
-    <button class="cart-button" id="cartBtn">
-        🛒 Koszyk
-        <span class="cart-counter" id="cartCounter">0</span>
-    </button>
+    <nav class="header-actions" aria-label="Informacje o sklepie i koszyk">
+        <a class="header-action" href="regulamin.html" aria-label="Regulamin sklepu" title="Regulamin sklepu">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 3h9l3 3v15H6z" />
+                <path d="M14 3v4h4M9 11h6M9 15h6M9 19h4" />
+            </svg>
+        </a>
+        <a class="header-action" href="dostawa.html" aria-label="Zasady dostawy" title="Zasady dostawy">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 6h11v11H3zM14 10h4l3 3v4h-7z" />
+                <circle cx="7" cy="18" r="2" />
+                <circle cx="18" cy="18" r="2" />
+            </svg>
+        </a>
+        <a class="header-action" href="zwroty.html" aria-label="Zasady zwrotów" title="Zasady zwrotów">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 7H5v-4M5.5 7A8 8 0 1 1 4 14" />
+                <path d="M8 12h8M12 8l4 4-4 4" />
+            </svg>
+        </a>
+        <button type="button" class="header-action cart-button" id="cartBtn" aria-label="Otwórz koszyk" title="Koszyk">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 4h2l2.2 10h9.9l2-7H6" />
+                <circle cx="9" cy="19" r="1.5" />
+                <circle cx="17" cy="19" r="1.5" />
+            </svg>
+            <span class="cart-counter" id="cartCounter" aria-label="Liczba produktów w koszyku">0</span>
+        </button>
+    </nav>
 
     <div class="shop-container active" id="shopContainer">
         <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <div class="product-modal" id="productModal" aria-hidden="true">
+        <article class="product-details" id="productDetails" role="dialog" aria-modal="true" aria-labelledby="productDetailsName">
+            <button type="button" class="product-details-close" id="closeProductBtn" aria-label="Zamknij szczegóły produktu">&times;</button>
+            <div id="productDetailsContent"></div>
+        </article>
     </div>
 
     <div class="cart-modal" id="cartModal">
         <div class="cart-content">
             <div class="cart-header">
                 <h2>Mój Koszyk</h2>
-                <button class="close-button" id="closeCartBtn">&times;</button>
+                <button type="button" class="close-button" id="closeCartBtn" aria-label="Zamknij koszyk">&times;</button>
             </div>
             <div class="cart-items" id="cartItems"></div>
             <div class="cart-summary" id="cartSummary"></div>
             <div class="cart-actions">
-                <button class="action-btn btn-buy" id="buyBtn">💳 Kup</button>
-                <button class="action-btn btn-continue" id="continueBtn">🛍️ Kontynuuj zakupy</button>
-                <button class="action-btn btn-abandon" id="abandonBtn">❌ Porzuć koszyk</button>
+                <button type="button" class="action-btn btn-buy" id="buyBtn">💳 Kup</button>
+                <button type="button" class="action-btn btn-continue" id="continueBtn">🛍️ Kontynuuj zakupy</button>
+                <button type="button" class="action-btn btn-abandon" id="abandonBtn">❌ Porzuć koszyk</button>
             </div>
         </div>
     </div>
@@ -538,253 +73,17 @@
         <div class="message-box" id="messageBox">
             <div class="message-icon" id="messageIcon"></div>
             <div class="message-text" id="messageText"></div>
-            <button class="message-ok-btn" id="messageOkBtn">OK</button>
+            <button type="button" class="message-ok-btn" id="messageOkBtn">OK</button>
         </div>
     </div>
 
-    <script>
-        // Products data - 21 europejskich zespołów
-        const products = [
-            { id: 1, name: 'Manchester', price: 89.99, image: '' },
-            { id: 2, name: 'Liverpool', price: 89.99, image: '' },
-            { id: 3, name: 'London', price: 99.99, image: '' },
-            { id: 4, name: 'Newcastle', price: 79.99, image: '' },
-            { id: 5, name: 'Edinburgh', price: 79.99, image: '' },
-            { id: 6, name: 'Barcelona', price: 94.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_1xudlq1xudlq1xud.png' },
-            { id: 7, name: 'Madrid', price: 94.99, image: '' },
-            { id: 8, name: 'Alicante', price: 89.99, image: '' },
-            { id: 9, name: 'Sevilla', price: 84.99, image: '' },
-            { id: 10, name: 'Valencia', price: 74.99, image: '' },
-            { id: 11, name: 'Turyn', price: 84.99, image: '' },
-            { id: 12, name: 'Milan', price: 89.99, image: '' },
-            { id: 13, name: 'Rimini', price: 79.99, image: '' },
-            { id: 14, name: 'Roma', price: 94.99, image: '' },
-            { id: 15, name: 'Napoli', price: 64.99, image: '' },
-            { id: 16, name: 'Munich', price: 74.99, image: '' },
-            { id: 17, name: 'Dortmund', price: 69.99, image: '' },
-            { id: 18, name: 'Paris', price: 99.99, image: '' },
-            { id: 19, name: 'Amsterdam', price: 74.99, image: '' },
-            { id: 20, name: 'Porto', price: 74.99, image: '' },
-            { id: 21, name: 'Lizbone', price: 74.99, image: '' },
-            { id: 22, name: 'Warsaw', price: 84.99, image: '' },
-            { id: 23, name: 'Wroclove', price: 84.99, image: '' },
-            { id: 24, name: 'Prague', price: 94.99, image: '' },
-            { id: 25, name: 'Athens', price: 84.99, image: '' },
-            { id: 26, name: 'Budapest', price: 74.99, image: '' }
-        ];
-        
-        const sizes = ['Mała', 'Średnia', 'Duża'];
-        let cart = [];
-        let selectedSizes = {};
+    <script src="/script.js" defer></script>
 
-        // DOM Elements
-        const cartBtn = document.getElementById('cartBtn');
-        const cartModal = document.getElementById('cartModal');
-        const closeCartBtn = document.getElementById('closeCartBtn');
-        const productsGrid = document.getElementById('productsGrid');
-        const cartItems = document.getElementById('cartItems');
-        const cartCounter = document.getElementById('cartCounter');
-        const buyBtn = document.getElementById('buyBtn');
-        const continueBtn = document.getElementById('continueBtn');
-        const abandonBtn = document.getElementById('abandonBtn');
-        const messageModal = document.getElementById('messageModal');
-        const messageBox = document.getElementById('messageBox');
-        const messageText = document.getElementById('messageText');
-        const messageIcon = document.getElementById('messageIcon');
-        const messageOkBtn = document.getElementById('messageOkBtn');
-        const cartSummary = document.getElementById('cartSummary');
+    <elevenlabs-convai agent-id="agent_5001kv0vpv6ff95rc2hap33cq5g9"></elevenlabs-convai><script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
-        // Initialize products
-        function initProducts() {
-            productsGrid.innerHTML = '';
-            products.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.className = 'product-card';
 
-                const sizeKey = `product-${product.id}`;
-                const selectedSize = selectedSizes[sizeKey] || sizes[0];
-
-                productCard.innerHTML = `
-                    <div class="product-image">
-                        ${product.image ? `<img src="${product.image}" alt="${product.name}" crossorigin="anonymous">` : '<div style="color: #cbd5e1; font-size: 2em;">📷 Brak obrazu</div>'}
-                    </div>
-                    <div class="product-info">
-                        <div class="product-name">${product.name}</div>
-                        <div class="product-price">${product.price.toFixed(2)} zł</div>
-                        <div class="size-selector">
-                            <label>Rozmiar:</label>
-                            <div class="size-options">
-                                ${sizes.map((size, index) => `
-                                    <button class="size-option ${selectedSize === size ? 'selected' : ''}" 
-                                            onclick="selectSize(${product.id}, '${size}', this)">
-                                        ${size.charAt(0)}
-                                    </button>
-                                `).join('')}
-                            </div>
-                        </div>
-                        <button class="add-to-cart-btn" onclick="addToCart(${product.id}, '${product.name}', ${product.price})">
-                            Dodaj do koszyka
-                        </button>
-                    </div>
-                `;
-                productsGrid.appendChild(productCard);
-            });
-        }
-
-        // Select size
-        function selectSize(productId, size, button) {
-            selectedSizes[`product-${productId}`] = size;
-            const sizeButtons = button.parentElement.querySelectorAll('.size-option');
-            sizeButtons.forEach(btn => btn.classList.remove('selected'));
-            button.classList.add('selected');
-        }
-
-        // Add to cart
-        function addToCart(productId, productName, price) {
-            const sizeKey = `product-${productId}`;
-            const size = selectedSizes[sizeKey] || sizes[0];
-
-            const product = {
-                id: productId,
-                name: productName,
-                price: price,
-                size: size,
-                cartId: `${productId}-${size}-${Date.now()}`
-            };
-
-            cart.push(product);
-            updateCartCounter();
-            showNotification();
-        }
-
-        // Show notification
-        function showNotification() {
-            console.log('Produkt dodany do koszyka!');
-        }
-
-        // Update cart counter
-        function updateCartCounter() {
-            cartCounter.textContent = cart.length;
-        }
-
-        // Open cart
-        function openCart() {
-            cartModal.classList.add('active');
-            updateCartDisplay();
-        }
-
-        // Close cart
-        function closeCart() {
-            cartModal.classList.remove('active');
-        }
-
-        // Update cart display
-        function updateCartDisplay() {
-            cartItems.innerHTML = '';
-
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<div class="empty-cart">Koszyk jest pusty</div>';
-                cartSummary.innerHTML = '';
-                return;
-            }
-
-            let total = 0;
-            cart.forEach((item, index) => {
-                total += item.price;
-                const itemElement = document.createElement('div');
-                itemElement.className = 'cart-item';
-                itemElement.innerHTML = `
-                    <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-details">
-                        <span><strong>Rozmiar:</strong> ${item.size}</span>
-                        <span><strong>Cena:</strong> <span class="cart-item-price">${item.price.toFixed(2)} zł</span></span>
-                    </div>
-                    <button class="remove-btn" onclick="removeFromCart('${item.cartId}')">Usuń</button>
-                `;
-                cartItems.appendChild(itemElement);
-            });
-
-            cartSummary.innerHTML = `
-                <div class="cart-total">
-                    <span>Razem:</span>
-                    <span>${total.toFixed(2)} zł</span>
-                </div>
-            `;
-        }
-
-        // Remove from cart
-        function removeFromCart(cartId) {
-            cart = cart.filter(item => item.cartId !== cartId);
-            updateCartCounter();
-            updateCartDisplay();
-        }
-
-        // Buy
-        function buy() {
-            if (cart.length === 0) {
-                showMessage('Koszyk jest pusty!', '⚠️', 'success');
-                return;
-            }
-
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            showMessage(`✅ Dziękujemy za zakup!\n\nKwota: ${total.toFixed(2)} zł\n\nZamówienie zostało potwierdzone.`, '✅', 'success');
-            cart = [];
-            updateCartCounter();
-            closeCart();
-        }
-
-        // Continue shopping
-        function continueShopping() {
-            closeCart();
-        }
-
-        // Abandon cart
-        function abandonCart() {
-            if (cart.length === 0) {
-                showMessage('Koszyk jest już pusty!', '⚠️', 'abandoned');
-                return;
-            }
-
-            showMessage('Koszyk został porzucony.\n\nZnowu zapraszamy!', '❌', 'abandoned');
-            cart = [];
-            updateCartCounter();
-            closeCart();
-        }
-
-        // Show message modal
-        function showMessage(text, icon, type) {
-            messageText.textContent = text;
-            messageIcon.textContent = icon;
-            messageBox.className = `message-box ${type}`;
-            messageModal.classList.add('active');
-        }
-
-        // Close message modal
-        function closeMessage() {
-            messageModal.classList.remove('active');
-        }
-
-        // Event listeners
-        cartBtn.addEventListener('click', openCart);
-        closeCartBtn.addEventListener('click', closeCart);
-        buyBtn.addEventListener('click', buy);
-        continueBtn.addEventListener('click', continueShopping);
-        abandonBtn.addEventListener('click', abandonCart);
-        messageOkBtn.addEventListener('click', closeMessage);
-
-        // Close modals when clicking outside
-        cartModal.addEventListener('click', (e) => {
-            if (e.target === cartModal) closeCart();
-        });
-
-        messageModal.addEventListener('click', (e) => {
-            if (e.target === messageModal) closeMessage();
-        });
-
-        // Initialize on load
-        initProducts();
-    </script>
-
-    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=1caf54d4-6a7a-4e9a-9e2f-d93198eabe6b"> </script>
     </body>
 </html>
+
+
+
