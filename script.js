@@ -22,7 +22,7 @@ const products = [
     { id: 20, name: 'Porto', price: 74.99, image: '' },
     { id: 21, name: 'Lizbone', price: 74.99, image: '' },
     { id: 22, name: 'Warsaw', price: 84.99, image: '' },
-    { id: 23, name: 'Wroclove', price: 84.99, image: '' },
+    { id: 23, name: 'Wroclove', price: 84.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_r8z5u2r8z5u2r8z5.png' },
     { id: 24, name: 'Prague', price: 94.99, image: '' },
     { id: 25, name: 'Athens', price: 84.99, image: '' },
     { id: 26, name: 'Budapest', price: 74.99, image: '' }
