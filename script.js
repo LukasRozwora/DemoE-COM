@@ -19,7 +19,7 @@ const products = [
     { id: 17, name: 'Dortmund', price: 69.99, image: '' },
     { id: 18, name: 'Paris', price: 99.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/98771e377748e8c7dcb75e231b2cae5fd239a1ed/Gemini_Generated_Image_53k8ht53k8ht53k8.png' },
     { id: 19, name: 'Amsterdam', price: 74.99, image: '' },
-    { id: 20, name: 'Porto', price: 74.99, image: '' },
+    { id: 20, name: 'Porto', price: 74.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_z5liviz5liviz5li.png' },
     { id: 21, name: 'Lizbone', price: 74.99, image: '' },
     { id: 22, name: 'Warsaw', price: 84.99, image: '' },
     { id: 23, name: 'Wroclove', price: 84.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_r8z5u2r8z5u2r8z5.png' },
