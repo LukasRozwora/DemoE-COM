@@ -357,12 +357,27 @@ function abandonCart() {
         return;
     }
 
+    abandonedCartPromptPending = true;
+
     showMessage('Koszyk został porzucony.', '❌', 'abandoned');
 
     cart = [];
     updateCartCounter();
     closeCart();
 }
+
+/*function abandonCart() {
+    if (cart.length === 0) {
+        showMessage('Koszyk jest już pusty!', '⚠️', 'abandoned');
+        return;
+    }
+
+    showMessage('Koszyk został porzucony.', '❌', 'abandoned');
+
+    cart = [];
+    updateCartCounter();
+    closeCart();
+}*/
 
 // Show message modal
 function showMessage(text, icon, type) {
@@ -375,7 +390,23 @@ function showMessage(text, icon, type) {
 // Close message modal
 function closeMessage() {
     messageModal.classList.remove('active');
+
+    if (abandonedCartPromptPending) {
+        abandonedCartPromptPending = false;
+
+        setTimeout(function () {
+            showProactiveChatMessage(
+                'Aj, widzimy, że porzuciłeś swój koszyk. Powiedz, co było nie tak — chętnie doradzę 🙂',
+                true
+            );
+        }, 300);
+    }
 }
+
+
+/*function closeMessage() {
+    messageModal.classList.remove('active');
+}*/
 
 // Event listeners
 productsGrid.addEventListener('click', event => {
@@ -459,10 +490,54 @@ let proactiveClickCount = 0;
 let proactiveMessageVisible = false;
 let proactiveMessageDisabled = false;
 let zendeskEventsRegistered = false;
+let abandonedCartPromptPending = false;
 
 const interactionsRequired = 3;
 
-function showProactiveChatMessage() {
+function showProactiveChatMessage(customText = null, forceShow = false) {
+    if (document.body.classList.contains('chat-active')) return;
+
+    if (proactiveMessageVisible && !forceShow) return;
+    if (proactiveMessageDisabled && !forceShow) return;
+
+    const existingMessage = document.getElementById('proactiveChatMessage');
+
+    if (existingMessage) {
+        existingMessage.remove();
+        proactiveMessageVisible = false;
+    }
+
+    if (forceShow) {
+        proactiveMessageDisabled = false;
+    }
+
+    proactiveMessageVisible = true;
+
+    const message = document.createElement('div');
+    message.id = 'proactiveChatMessage';
+    message.className = 'proactive-chat-message';
+
+    const text = customText || 'Cześć, cieszymy się, że do nas zaglądasz, w razie potrzeby chętnie doradzę 🙂';
+
+    message.innerHTML = `
+        <button type="button" class="proactive-chat-close" aria-label="Zamknij">&times;</button>
+        <span class="proactive-chat-text">
+            ${text}
+        </span>
+    `;
+
+    document.body.appendChild(message);
+
+    const closeButton = message.querySelector('.proactive-chat-close');
+
+    closeButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        hideProactiveChatMessage(true);
+    });
+}
+
+
+/*function showProactiveChatMessage() {
     if (proactiveMessageVisible) return;
     if (proactiveMessageDisabled) return;
     if (document.body.classList.contains('chat-active')) return;
@@ -491,7 +566,7 @@ function showProactiveChatMessage() {
         event.stopPropagation();
         hideProactiveChatMessage(true);
     });
-}
+}*/
 
 function hideProactiveChatMessage(disableForSession = false) {
     const message = document.getElementById('proactiveChatMessage');
