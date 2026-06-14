@@ -20,7 +20,7 @@ const products = [
     { id: 18, name: 'Paris', price: 99.99, image: 'images/Paris.png' },
     { id: 19, name: 'Amsterdam', price: 74.99, image: 'images/Amsterdam.png' },
     { id: 20, name: 'Porto', price: 74.99, image: 'images/Porto.png' },
-    { id: 21, name: 'Lizbone', price: 74.99, image: '' },
+    { id: 21, name: 'Lizbone', price: 74.99, image: 'images/Lisboa.png' },
     { id: 22, name: 'Warsaw', price: 84.99, image: 'images/Warszawa.png' },
     { id: 23, name: 'Wroclove', price: 84.99, image: 'images/Wroclove.png' },
     { id: 24, name: 'Prague', price: 94.99, image: 'images/Prague.png' },
