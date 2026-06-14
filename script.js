@@ -1,8 +1,8 @@
 // Products data - 26 europejskich zespołów
 const products = [
-    { id: 1, name: 'Manchester', price: 89.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_vjr3t5vjr3t5vjr3.png' },
-    { id: 2, name: 'Liverpool', price: 89.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_m13tf6m13tf6m13t.png' },
-    { id: 3, name: 'London', price: 99.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_rox0pvrox0pvrox0.png' },
+    { id: 1, name: 'Manchester', price: 89.99, image: 'images/Manchester.png' },
+    { id: 2, name: 'Liverpool', price: 89.99, image: 'images/Liverpool.png' },
+    { id: 3, name: 'London', price: 99.99, image: 'images/London.png' },
     { id: 4, name: 'Newcastle', price: 79.99, image: 'images/Newcastle.png' },
     { id: 5, name: 'Edinburgh', price: 79.99, image: 'images/Edinburgh.png' },
     { id: 6, name: 'Barcelona', price: 94.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_1xudlq1xudlq1xud.png' },
