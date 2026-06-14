@@ -472,7 +472,7 @@ function showProactiveChatMessage() {
 
     message.innerHTML = `
         <button type="button" class="proactive-chat-close" aria-label="Zamknij">&times;</button>
-        <span class="proactive-chat-text">Cześć, w razie potrzeby chętnie doradzę 🙂</span>
+        <span class="proactive-chat-text">Cześć, cieszymy się, że do nas zaglądasz, w razie potrzeby chętnie doradzę 🙂</span>
     `;
 
     document.body.appendChild(message);
