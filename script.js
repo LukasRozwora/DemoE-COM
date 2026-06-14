@@ -397,7 +397,7 @@ function closeMessage() {
         setTimeout(function () {
             showProactiveChatMessage(
                 'Aj, widzimy, że porzuciłeś swój koszyk. Powiedz, co było nie tak — chętnie doradzę 🙂',
-                true
+                'cart'
             );
         }, 300);
     }
@@ -488,17 +488,22 @@ syncProductWithUrl();
 // Proaktywne zaproszenie do rozmowy przy widgetcie Zendesk
 let proactiveClickCount = 0;
 let proactiveMessageVisible = false;
-let proactiveMessageDisabled = false;
+let welcomeMessageDisabled = false;
 let zendeskEventsRegistered = false;
 let abandonedCartPromptPending = false;
 
+
 const interactionsRequired = 3;
 
-function showProactiveChatMessage(customText = null, forceShow = false) {
+function showProactiveChatMessage(customText = null, type = 'welcome') {
     if (document.body.classList.contains('chat-active')) return;
 
-    if (proactiveMessageVisible && !forceShow) return;
-    if (proactiveMessageDisabled && !forceShow) return;
+    const isWelcomeMessage = type === 'welcome';
+    const isCartMessage = type === 'cart';
+
+    // Blokujemy tylko zwykły dymek powitalny.
+    // Dymek koszykowy może pojawić się nawet po wcześniejszym kliknięciu chatu.
+    if (isWelcomeMessage && welcomeMessageDisabled) return;
 
     const existingMessage = document.getElementById('proactiveChatMessage');
 
@@ -507,15 +512,11 @@ function showProactiveChatMessage(customText = null, forceShow = false) {
         proactiveMessageVisible = false;
     }
 
-    if (forceShow) {
-        proactiveMessageDisabled = false;
-    }
-
     proactiveMessageVisible = true;
 
     const message = document.createElement('div');
     message.id = 'proactiveChatMessage';
-    message.className = 'proactive-chat-message';
+    message.className = `proactive-chat-message proactive-chat-message-${type}`;
 
     const text = customText || 'Cześć, cieszymy się, że do nas zaglądasz, w razie potrzeby chętnie doradzę 🙂';
 
@@ -532,10 +533,14 @@ function showProactiveChatMessage(customText = null, forceShow = false) {
 
     closeButton.addEventListener('click', function (event) {
         event.stopPropagation();
-        hideProactiveChatMessage(true);
+
+        if (isWelcomeMessage) {
+            welcomeMessageDisabled = true;
+        }
+
+        hideProactiveChatMessage();
     });
 }
-
 
 /*function showProactiveChatMessage() {
     if (proactiveMessageVisible) return;
@@ -568,7 +573,7 @@ function showProactiveChatMessage(customText = null, forceShow = false) {
     });
 }*/
 
-function hideProactiveChatMessage(disableForSession = false) {
+function hideProactiveChatMessage() {
     const message = document.getElementById('proactiveChatMessage');
 
     if (message) {
@@ -576,16 +581,21 @@ function hideProactiveChatMessage(disableForSession = false) {
     }
 
     proactiveMessageVisible = false;
-
-    if (disableForSession) {
-        proactiveMessageDisabled = true;
-    }
 }
+
 
 function handleChatOpen() {
     document.body.classList.add('chat-active');
-    hideProactiveChatMessage(true);
+
+    const message = document.getElementById('proactiveChatMessage');
+
+    if (message && message.classList.contains('proactive-chat-message-welcome')) {
+        welcomeMessageDisabled = true;
+    }
+
+    hideProactiveChatMessage();
 }
+
 
 function handleChatClose() {
     document.body.classList.remove('chat-active');
@@ -602,7 +612,7 @@ function handleUserInteraction(event) {
     // Jeśli chat jest otwarty albo dymek został wyłączony, nie pokazuj go.
     if (
         document.body.classList.contains('chat-active') ||
-        proactiveMessageDisabled
+        welcomeMessageDisabled
     ) {
         return;
     }
