@@ -3,87 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>European cities T-shirts shop</title>
-    <link rel="stylesheet" href="/styles.css">
+    <title>Zwroty | European cities T-shirts shop</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>European cities T-shirts shop</h1>
-        <p>Your journey with the perfect t-shirt</p>
-    </header>
+    <main class="info-page">
+        <header class="info-page-header">
+            <h1>Zwroty</h1>
+            <p>European cities T-shirts shop</p>
+        </header>
 
-    <nav class="header-actions" aria-label="Informacje o sklepie i koszyk">
-        <a class="header-action" href="regulamin.html" aria-label="Regulamin sklepu" title="Regulamin sklepu">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M6 3h9l3 3v15H6z" />
-                <path d="M14 3v4h4M9 11h6M9 15h6M9 19h4" />
-            </svg>
-        </a>
-        <a class="header-action" href="dostawa.html" aria-label="Zasady dostawy" title="Zasady dostawy">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M3 6h11v11H3zM14 10h4l3 3v4h-7z" />
-                <circle cx="7" cy="18" r="2" />
-                <circle cx="18" cy="18" r="2" />
-            </svg>
-        </a>
-        <a class="header-action" href="zwroty.html" aria-label="Zasady zwrotów" title="Zasady zwrotów">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M9 7H5v-4M5.5 7A8 8 0 1 1 4 14" />
-                <path d="M8 12h8M12 8l4 4-4 4" />
-            </svg>
-        </a>
-        <button type="button" class="header-action cart-button" id="cartBtn" aria-label="Otwórz koszyk" title="Koszyk">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M3 4h2l2.2 10h9.9l2-7H6" />
-                <circle cx="9" cy="19" r="1.5" />
-                <circle cx="17" cy="19" r="1.5" />
-            </svg>
-            <span class="cart-counter" id="cartCounter" aria-label="Liczba produktów w koszyku">0</span>
-        </button>
-    </nav>
+        <a class="back-to-shop" href="index.html">&larr; Wróć do sklepu</a>
 
-    <div class="shop-container active" id="shopContainer">
-        <div class="products-grid" id="productsGrid"></div>
-    </div>
+        <article class="info-content">
+            <h2>Zasady zwrotów</h2>
+            <div class="regulations-text">
 
-    <div class="product-modal" id="productModal" aria-hidden="true">
-        <article class="product-details" id="productDetails" role="dialog" aria-modal="true" aria-labelledby="productDetailsName">
-            <button type="button" class="product-details-close" id="closeProductBtn" aria-label="Zamknij szczegóły produktu">&times;</button>
-            <div id="productDetailsContent"></div>
+1. Zwrot produktu
+Klient będący konsumentem może zwrócić produkt zakupiony przez internet w terminie 14 dni od otrzymania przesyłki.
+Zwrot nie wymaga podania przyczyny.
+Aby dokonać zwrotu, należy wysłać wiadomość na adres: [adres e-mail], wpisując w tytule wiadomości: Zwrot zamówienia nr [numer zamówienia].
+Produkt należy odesłać na adres: [adres do zwrotów].
+Zwracany produkt powinien być kompletny, czysty i bez śladów użytkowania wykraczających poza zwykłe sprawdzenie produktu.
+
+2. Koszt zwrotu
+Koszt odesłania produktu ponosi klient, chyba że sklep postanowi inaczej.
+Sklep zwraca klientowi płatność za produkt oraz najtańszy standardowy koszt dostawy dostępny w sklepie, jeśli taki koszt został poniesiony przy zamówieniu.
+
+3. Termin zwrotu pieniędzy
+Zwrot pieniędzy następuje nie później niż w terminie 14 dni od otrzymania oświadczenia o odstąpieniu od umowy.
+Sklep może wstrzymać się ze zwrotem środków do czasu otrzymania produktu lub potwierdzenia jego odesłania.
+
+4. Produkty personalizowane
+
+Zwrotowi mogą nie podlegać produkty wykonane na indywidualne zamówienie klienta, np. koszulki z własnym nadrukiem, imieniem, nazwą, datą, grafiką lub innym elementem personalizacji.
+
+            </div>
         </article>
-    </div>
-
-    <div class="cart-modal" id="cartModal">
-        <div class="cart-content">
-            <div class="cart-header">
-                <h2>Mój Koszyk</h2>
-                <button type="button" class="close-button" id="closeCartBtn" aria-label="Zamknij koszyk">&times;</button>
-            </div>
-            <div class="cart-items" id="cartItems"></div>
-            <div class="cart-summary" id="cartSummary"></div>
-            <div class="cart-actions">
-                <button type="button" class="action-btn btn-buy" id="buyBtn">💳 Kup</button>
-                <button type="button" class="action-btn btn-continue" id="continueBtn">🛍️ Kontynuuj zakupy</button>
-                <button type="button" class="action-btn btn-abandon" id="abandonBtn">❌ Porzuć koszyk</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="message-modal" id="messageModal">
-        <div class="message-box" id="messageBox">
-            <div class="message-icon" id="messageIcon"></div>
-            <div class="message-text" id="messageText"></div>
-            <button type="button" class="message-ok-btn" id="messageOkBtn">OK</button>
-        </div>
-    </div>
-
-    <script src="/script.js" defer></script>
-
-    <elevenlabs-convai agent-id="agent_5001kv0vpv6ff95rc2hap33cq5g9"></elevenlabs-convai><script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
-
-
-    </body>
+    </main>
+</body>
 </html>
-
-
-
