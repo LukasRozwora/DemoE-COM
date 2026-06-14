@@ -472,7 +472,7 @@ function showProactiveChatMessage() {
 
     message.innerHTML = `
         <button type="button" class="proactive-chat-close" aria-label="Zamknij">&times;</button>
-        <span>Cześć, cieszę się, że do nas zaglądasz, w razie potrzeby chętnie doradzę 🙂</span>
+        <span class="proactive-chat-text">Cześć, w razie potrzeby chętnie doradzę 🙂</span>
     `;
 
     document.body.appendChild(message);
@@ -481,9 +481,18 @@ function showProactiveChatMessage() {
 
     closeButton.addEventListener('click', function (event) {
         event.stopPropagation();
-        message.remove();
-        proactiveMessageVisible = false;
+        hideProactiveChatMessage();
     });
+}
+
+function hideProactiveChatMessage() {
+    const message = document.getElementById('proactiveChatMessage');
+
+    if (message) {
+        message.remove();
+    }
+
+    proactiveMessageVisible = false;
 }
 
 // Pokaż po 10 sekundach
@@ -492,9 +501,15 @@ setTimeout(function () {
 }, 10000);
 
 // Pokaż po 3 kliknięciach w stronę
-document.addEventListener('click', function () {
+document.addEventListener('click', function (event) {
+    const clickedChatWidget = event.target.closest('elevenlabs-convai');
+
+    if (clickedChatWidget) {
+        hideProactiveChatMessage();
+        return;
+    }
+
     proactiveClickCount += 1;
-    console.log('Liczba kliknięć:', proactiveClickCount);
 
     if (proactiveClickCount >= 3) {
         showProactiveChatMessage();
