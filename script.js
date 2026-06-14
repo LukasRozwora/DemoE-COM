@@ -1,4 +1,4 @@
-// Products data - 21 europejskich zespołów
+// Products data - 26 europejskich zespołów
 const products = [
     { id: 1, name: 'Manchester', price: 89.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_vjr3t5vjr3t5vjr3.png' },
     { id: 2, name: 'Liverpool', price: 89.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_m13tf6m13tf6m13t.png' },
@@ -62,28 +62,47 @@ function createSlug(name) {
         .replace(/^-|-$/g, '');
 }
 
-function getProductUrl(product) {
-    if (window.location.protocol === 'file:') {
-        return `${window.location.pathname}?product=${createSlug(product.name)}`;
-    }
+/*
+    GitHub Pages nie obsługuje dynamicznych adresów typu:
+    /product/liverpool
 
-    return `/product/${createSlug(product.name)}`;
+    Dlatego generujemy linki jako:
+    ?product=liverpool
+
+    Przykład:
+    https://lukasrozwora.github.io/?product=liverpool
+
+    Jeśli strona działa w repozytorium, np.:
+    https://lukasrozwora.github.io/DemoE-COM/
+
+    link automatycznie będzie:
+    https://lukasrozwora.github.io/DemoE-COM/?product=liverpool
+*/
+function getProductUrl(product) {
+    return `?product=${encodeURIComponent(createSlug(product.name))}`;
 }
 
 function getShopUrl() {
-    return window.location.protocol === 'file:' ? window.location.pathname : '/';
+    return window.location.pathname;
 }
 
 function getProductFromUrl() {
     const querySlug = new URLSearchParams(window.location.search).get('product');
+
+    // Zostawiamy też obsługę starego wariantu /product/liverpool,
+    // gdyby strona działała kiedyś na hostingu z routingiem.
     const pathMatch = window.location.pathname.match(/\/product\/([^/]+)\/?$/);
+
     const slug = querySlug || (pathMatch ? decodeURIComponent(pathMatch[1]) : null);
 
-    return slug ? products.find(product => createSlug(product.name) === slug.toLowerCase()) : null;
+    return slug
+        ? products.find(product => createSlug(product.name) === slug.toLowerCase())
+        : null;
 }
 
 function productImageMarkup(product, details = false) {
     const imageClass = details ? 'product-details-image' : 'product-image';
+
     const image = product.image
         ? `<img src="${product.image}" alt="Koszulka ${product.name}" crossorigin="anonymous">`
         : '<div class="image-placeholder">📷 Brak obrazu</div>';
@@ -110,6 +129,7 @@ function sizeSelectorMarkup(product, selectedSize) {
 // Initialize products
 function initProducts() {
     productsGrid.innerHTML = '';
+
     products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
@@ -131,6 +151,7 @@ function initProducts() {
                 </button>
             </div>
         `;
+
         productsGrid.appendChild(productCard);
     });
 }
@@ -160,12 +181,17 @@ function renderProductDetails(product) {
 function openProduct(product, updateHistory = true) {
     activeProductId = product.id;
     renderProductDetails(product);
+
     productModal.classList.add('active');
     productModal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('modal-open');
 
     if (updateHistory) {
-        window.history.pushState({ productId: product.id, productOverlay: true }, '', getProductUrl(product));
+        window.history.pushState(
+            { productId: product.id, productOverlay: true },
+            '',
+            getProductUrl(product)
+        );
     }
 
     closeProductBtn.focus();
@@ -173,6 +199,7 @@ function openProduct(product, updateHistory = true) {
 
 function closeProduct(updateHistory = true) {
     activeProductId = null;
+
     productModal.classList.remove('active');
     productModal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('modal-open');
@@ -191,8 +218,13 @@ function syncProductWithUrl() {
 
     if (product) {
         if (!window.history.state?.productId) {
-            window.history.replaceState({ productId: product.id, directProduct: true }, '', window.location.href);
+            window.history.replaceState(
+                { productId: product.id, directProduct: true },
+                '',
+                window.location.href
+            );
         }
+
         openProduct(product, false);
     } else if (activeProductId !== null) {
         closeProduct(false);
@@ -202,8 +234,10 @@ function syncProductWithUrl() {
 // Select size
 function selectSize(productId, size, button) {
     selectedSizes[`product-${productId}`] = size;
+
     const sizeButtons = button.parentElement.querySelectorAll('.size-option');
     sizeButtons.forEach(btn => btn.classList.remove('selected'));
+
     button.classList.add('selected');
 }
 
@@ -257,18 +291,22 @@ function updateCartDisplay() {
     }
 
     let total = 0;
-    cart.forEach((item, index) => {
+
+    cart.forEach(item => {
         total += item.price;
+
         const itemElement = document.createElement('div');
         itemElement.className = 'cart-item';
+
         itemElement.innerHTML = `
             <div class="cart-item-name">${item.name}</div>
             <div class="cart-item-details">
                 <span><strong>Rozmiar:</strong> ${item.size}</span>
                 <span><strong>Cena:</strong> <span class="cart-item-price">${item.price.toFixed(2)} zł</span></span>
             </div>
-                <button type="button" class="remove-btn" data-cart-id="${item.cartId}">Usuń</button>
+            <button type="button" class="remove-btn" data-cart-id="${item.cartId}">Usuń</button>
         `;
+
         cartItems.appendChild(itemElement);
     });
 
@@ -295,7 +333,13 @@ function buy() {
     }
 
     const total = cart.reduce((sum, item) => sum + item.price, 0);
-    showMessage(`✅ Dziękujemy za zakup!\n\nKwota: ${total.toFixed(2)} zł\n\nZamówienie zostało potwierdzone.`, '✅', 'success');
+
+    showMessage(
+        `✅ Dziękujemy za zakup!\n\nKwota: ${total.toFixed(2)} zł\n\nZamówienie zostało potwierdzone.`,
+        '✅',
+        'success'
+    );
+
     cart = [];
     updateCartCounter();
     closeCart();
@@ -314,6 +358,7 @@ function abandonCart() {
     }
 
     showMessage('Koszyk został porzucony.', '❌', 'abandoned');
+
     cart = [];
     updateCartCounter();
     closeCart();
@@ -333,8 +378,9 @@ function closeMessage() {
 }
 
 // Event listeners
-productsGrid.addEventListener('click', (event) => {
+productsGrid.addEventListener('click', event => {
     const detailsButton = event.target.closest('.product-details-btn');
+
     if (detailsButton) {
         const product = products.find(item => item.id === Number(detailsButton.dataset.productId));
         if (product) openProduct(product);
@@ -342,33 +388,37 @@ productsGrid.addEventListener('click', (event) => {
     }
 
     const sizeButton = event.target.closest('.size-option');
+
     if (sizeButton) {
         selectSize(Number(sizeButton.dataset.productId), sizeButton.dataset.size, sizeButton);
         return;
     }
 
     const addButton = event.target.closest('.add-to-cart-btn');
+
     if (addButton) {
         const product = products.find(item => item.id === Number(addButton.dataset.productId));
         if (product) addToCart(product.id, product.name, product.price);
     }
 });
 
-productDetailsContent.addEventListener('click', (event) => {
+productDetailsContent.addEventListener('click', event => {
     const sizeButton = event.target.closest('.size-option');
+
     if (sizeButton) {
         selectSize(Number(sizeButton.dataset.productId), sizeButton.dataset.size, sizeButton);
         return;
     }
 
     const addButton = event.target.closest('.add-to-cart-btn');
+
     if (addButton) {
         const product = products.find(item => item.id === Number(addButton.dataset.productId));
         if (product) addToCart(product.id, product.name, product.price);
     }
 });
 
-cartItems.addEventListener('click', (event) => {
+cartItems.addEventListener('click', event => {
     const removeButton = event.target.closest('.remove-btn');
     if (removeButton) removeFromCart(removeButton.dataset.cartId);
 });
@@ -380,22 +430,23 @@ continueBtn.addEventListener('click', continueShopping);
 abandonBtn.addEventListener('click', abandonCart);
 messageOkBtn.addEventListener('click', closeMessage);
 closeProductBtn.addEventListener('click', closeProduct);
+
 window.addEventListener('popstate', syncProductWithUrl);
 
 // Close modals when clicking outside
-cartModal.addEventListener('click', (e) => {
-    if (e.target === cartModal) closeCart();
+cartModal.addEventListener('click', event => {
+    if (event.target === cartModal) closeCart();
 });
 
-messageModal.addEventListener('click', (e) => {
-    if (e.target === messageModal) closeMessage();
+messageModal.addEventListener('click', event => {
+    if (event.target === messageModal) closeMessage();
 });
 
-productModal.addEventListener('click', (event) => {
+productModal.addEventListener('click', event => {
     if (event.target === productModal) closeProduct();
 });
 
-document.addEventListener('keydown', (event) => {
+document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && activeProductId !== null) closeProduct();
 });
 
