@@ -10,7 +10,7 @@ const products = [
     { id: 8, name: 'Alicante', price: 89.99, image: '' },
     { id: 9, name: 'Sevilla', price: 84.99, image: '' },
     { id: 10, name: 'Valencia', price: 74.99, image: '' },
-    { id: 11, name: 'Turyn', price: 84.99, image: '' },
+    { id: 11, name: 'Turyn', price: 84.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_frr1vcfrr1vcfrr1.png' },
     { id: 12, name: 'Milan', price: 89.99, image: '' },
     { id: 13, name: 'Rimini', price: 79.99, image: '' },
     { id: 14, name: 'Roma', price: 94.99, image: '' },
