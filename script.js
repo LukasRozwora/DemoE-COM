@@ -8,7 +8,7 @@ const products = [
     { id: 6, name: 'Barcelona', price: 94.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_1xudlq1xudlq1xud.png' },
     { id: 7, name: 'Madrid', price: 94.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_l8bw3dl8bw3dl8bw.png' },
     { id: 8, name: 'Alicante', price: 89.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_2by4aj2by4aj2by4.png' },
-    { id: 9, name: 'Sevilla', price: 84.99, image: '' },
+    { id: 9, name: 'Sevilla', price: 84.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_wigwi0wigwi0wigw%20(1).png' },
     { id: 10, name: 'Valencia', price: 74.99, image: '' },
     { id: 11, name: 'Turyn', price: 84.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_frr1vcfrr1vcfrr1.png' },
     { id: 12, name: 'Milan', price: 89.99, image: '' },
