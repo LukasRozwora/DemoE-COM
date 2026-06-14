@@ -847,5 +847,10 @@ header p {
   }
 }
 
+body.chat-active .proactive-chat-message {
+  display: none !important;
+}
+
+
 
 
