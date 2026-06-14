@@ -455,7 +455,7 @@ initProducts();
 syncProductWithUrl();
 
 
-// Proaktywne zaproszenie do rozmowy
+// Proaktywne zaproszenie do rozmowy przy widgetcie Zendesk
 let proactiveClickCount = 0;
 let proactiveMessageVisible = false;
 let proactiveMessageDisabled = false;
@@ -507,6 +507,15 @@ function hideProactiveChatMessage(disableForSession = false) {
     }
 }
 
+function handleChatOpen() {
+    document.body.classList.add('chat-active');
+    hideProactiveChatMessage(true);
+}
+
+function handleChatClose() {
+    document.body.classList.remove('chat-active');
+}
+
 function handleUserInteraction(event) {
     const proactiveMessage = document.getElementById('proactiveChatMessage');
 
@@ -520,7 +529,7 @@ function handleUserInteraction(event) {
         return;
     }
 
-    // Jeżeli dymka już była pokazana, nie licz dalej.
+    // Jeżeli dymka już jest widoczna, nie licz dalej.
     if (proactiveMessageVisible) {
         return;
     }
@@ -533,27 +542,21 @@ function handleUserInteraction(event) {
     }
 }
 
-// Warunek 1: pokaż po 3 kliknięciach
+// Pokaż dymkę po 3 kliknięciach w stronę.
 document.addEventListener('click', handleUserInteraction, true);
 
-// Warunek 2: pokaż po 10 sekundach
+// Pokaż dymkę po 10 sekundach.
 setTimeout(function () {
     showProactiveChatMessage();
 }, 10000);
 
-// Obsługa Zendesk Messaging
-function handleChatOpen() {
-    document.body.classList.add('chat-active');
-    hideProactiveChatMessage(true);
-}
+// Oficjalne eventy Zendesk Messaging, jeśli są dostępne.
+function registerZendeskEvents() {
+    if (typeof zE !== 'function') {
+        return;
+    }
 
-function handleChatClose() {
-    document.body.classList.remove('chat-active');
-}
-
-// Jeśli używasz Zendesk Web Widget / Messaging
-window.addEventListener('load', function () {
-    if (typeof zE === 'function') {
+    try {
         zE('messenger:on', 'open', function () {
             handleChatOpen();
         });
@@ -561,7 +564,85 @@ window.addEventListener('load', function () {
         zE('messenger:on', 'close', function () {
             handleChatClose();
         });
+    } catch (error) {
+        console.log('Zendesk event registration error:', error);
     }
+}
+
+// Wykrywanie otwartego okna Zendesk po iframe.
+// To jest dodatkowe zabezpieczenie, gdy event zE nie odpali.
+function isZendeskChatOpen() {
+    const iframes = Array.from(document.querySelectorAll('iframe'));
+
+    return iframes.some(iframe => {
+        const rect = iframe.getBoundingClientRect();
+
+        const title = (iframe.getAttribute('title') || '').toLowerCase();
+        const name = (iframe.getAttribute('name') || '').toLowerCase();
+        const src = (iframe.getAttribute('src') || '').toLowerCase();
+        const id = (iframe.getAttribute('id') || '').toLowerCase();
+        const className = (iframe.getAttribute('class') || '').toLowerCase();
+
+        const iframeLooksLikeZendesk =
+            title.includes('zendesk') ||
+            title.includes('messaging') ||
+            title.includes('chat') ||
+            name.includes('zendesk') ||
+            name.includes('messaging') ||
+            name.includes('chat') ||
+            src.includes('zendesk') ||
+            src.includes('zdassets') ||
+            src.includes('ekr') ||
+            id.includes('zendesk') ||
+            id.includes('webwidget') ||
+            id.includes('launcher') ||
+            className.includes('zendesk') ||
+            className.includes('webwidget') ||
+            className.includes('launcher');
+
+        const iframeLooksLikeOpenChatWindow =
+            rect.width > 260 &&
+            rect.height > 260 &&
+            rect.right > window.innerWidth - 120 &&
+            rect.bottom > window.innerHeight - 120;
+
+        return iframeLooksLikeZendesk && iframeLooksLikeOpenChatWindow;
+    });
+}
+
+// Wykrywanie kliknięcia w prawy dolny obszar widgetu.
+// Przydatne, gdy kliknięcie w iframe nie dochodzi normalnie do document.
+document.addEventListener('pointerdown', function (event) {
+    const clickX = event.clientX;
+    const clickY = event.clientY;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    const clickedBottomRightChatArea =
+        clickX > windowWidth - 160 &&
+        clickY > windowHeight - 160;
+
+    if (clickedBottomRightChatArea) {
+        handleChatOpen();
+    }
+}, true);
+
+// Co chwilę sprawdzamy, czy chat jest już otwarty.
+// Jeżeli tak, chowamy naszą dymkę.
+setInterval(function () {
+    if (isZendeskChatOpen()) {
+        handleChatOpen();
+    }
+}, 300);
+
+// Rejestracja eventów po załadowaniu strony.
+// Kilka prób, bo widget Zendesk może ładować się z opóźnieniem.
+window.addEventListener('load', function () {
+    registerZendeskEvents();
+
+    setTimeout(registerZendeskEvents, 1000);
+    setTimeout(registerZendeskEvents, 2500);
+    setTimeout(registerZendeskEvents, 5000);
 });
 
 
