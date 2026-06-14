@@ -18,14 +18,14 @@ const products = [
     { id: 16, name: 'Munich', price: 74.99, image: 'images/Munchen.png' },
     { id: 17, name: 'Dortmund', price: 69.99, image: 'images/Dortmund.png' },
     { id: 18, name: 'Paris', price: 99.99, image: 'images/Paris.png' },
-    { id: 19, name: 'Amsterdam', price: 74.99, image: '' },
+    { id: 19, name: 'Amsterdam', price: 74.99, image: 'images/Amsterdam.png' },
     { id: 20, name: 'Porto', price: 74.99, image: 'images/Porto.png' },
     { id: 21, name: 'Lizbone', price: 74.99, image: '' },
     { id: 22, name: 'Warsaw', price: 84.99, image: 'images/Warszawa.png' },
     { id: 23, name: 'Wroclove', price: 84.99, image: 'images/Wroclove.png' },
-    { id: 24, name: 'Prague', price: 94.99, image: '' },
+    { id: 24, name: 'Prague', price: 94.99, image: 'images/Prague.png' },
     { id: 25, name: 'Athens', price: 84.99, image: 'images/Athens.png' },
-    { id: 26, name: 'Budapest', price: 74.99, image: '' }
+    { id: 26, name: 'Budapest', price: 74.99, image: 'images/Budapest.png' }
 ];
 
 const sizes = ['Mała', 'Średnia', 'Duża'];
