@@ -15,7 +15,7 @@ const products = [
     { id: 13, name: 'Rimini', price: 79.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_5qcjtf5qcjtf5qcj.png' },
     { id: 14, name: 'Roma', price: 94.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_4km21c4km21c4km2.png' },
     { id: 15, name: 'Napoli', price: 64.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_3hb73p3hb73p3hb7.png' },
-    { id: 16, name: 'Munich', price: 74.99, image: '' },
+    { id: 16, name: 'Munich', price: 74.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/main/Gemini_Generated_Image_ujab0iujab0iujab.png' },
     { id: 17, name: 'Dortmund', price: 69.99, image: '' },
     { id: 18, name: 'Paris', price: 99.99, image: 'https://raw.githubusercontent.com/LukasRozwora/DemoE-COM/98771e377748e8c7dcb75e231b2cae5fd239a1ed/Gemini_Generated_Image_53k8ht53k8ht53k8.png' },
     { id: 19, name: 'Amsterdam', price: 74.99, image: '' },
